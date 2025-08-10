@@ -1,0 +1,30 @@
+{
+  "name": "ResetPath",
+  "bundleIdentifier": "com.resetpath.app",
+  "developerName": "ResetPath Team",
+  "version": "1.0.0",
+  "versionDate": "2025-08-10",
+  "versionDescription": "Initial release of ResetPath - Your companion in breaking free from porn and regaining control. Features include streak tracking, urge management tools, private journaling, and motivational content.",
+  "downloadURL": "https://your-domain.com/resetpath.ipa",
+  "localizedDescription": "ResetPath is a private, offline-first recovery app designed to help you break free from porn addiction using evidence-based psychology. Track your progress, manage urges with proven techniques, and build healthy habits - all while keeping your data completely private on your device.",
+  "iconURL": "https://your-domain.com/icons/icon-512x512.png",
+  "tintColor": "#4a9eff",
+  "size": 5242880,
+  "screenshotURLs": [
+    "https://your-domain.com/screenshots/home-screen.png",
+    "https://your-domain.com/screenshots/progress-screen.png",
+    "https://your-domain.com/screenshots/urge-help-screen.png",
+    "https://your-domain.com/screenshots/journal-screen.png"
+  ],
+  "permissions": [
+    {
+      "type": "background-processing",
+      "usageDescription": "Used for local data persistence and offline functionality"
+    }
+  ],
+  "appPermissions": {
+    "entitlements": [
+      "com.apple.security.application-groups"
+    ]
+  }
+}

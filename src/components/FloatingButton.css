@@ -1,0 +1,67 @@
+.floating-button {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border: none;
+  border-radius: 50%;
+  box-shadow: 
+    0 8px 32px rgba(239, 68, 68, 0.5),
+    0 0 0 4px rgba(239, 68, 68, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 999;
+  color: white;
+  backdrop-filter: blur(10px);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 
+      0 8px 32px rgba(239, 68, 68, 0.5),
+      0 0 0 4px rgba(239, 68, 68, 0.2),
+      0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 8px 32px rgba(239, 68, 68, 0.7),
+      0 0 0 8px rgba(239, 68, 68, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.2);
+  }
+}
+
+.floating-button:hover {
+  transform: scale(1.15);
+  box-shadow: 
+    0 12px 40px rgba(239, 68, 68, 0.6),
+    0 0 0 6px rgba(239, 68, 68, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.2);
+  animation: none;
+}
+
+.floating-button:active {
+  transform: scale(1.05);
+}
+
+.floating-icon {
+  font-size: 24px;
+  margin-bottom: 2px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.floating-text {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}

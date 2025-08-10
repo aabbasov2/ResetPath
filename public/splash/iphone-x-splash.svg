@@ -1,0 +1,42 @@
+<svg width="375" height="812" viewBox="0 0 375 812" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f1419;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a2332;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a9eff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0066cc;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="375" height="812" fill="url(#bg)"/>
+  
+  <!-- App Icon -->
+  <g transform="translate(187.5,300)">
+    <circle r="50" fill="url(#accent)" opacity="0.2"/>
+    <circle r="35" fill="url(#accent)"/>
+    <g fill="white">
+      <path d="M-12,-20 L0,-30 L12,-20 L6,-20 L6,10 L-6,10 L-6,-20 Z"/>
+      <rect x="-15" y="15" width="30" height="4" rx="2"/>
+    </g>
+  </g>
+  
+  <!-- App Name -->
+  <text x="187.5" y="420" text-anchor="middle" fill="white" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="24" font-weight="600">ResetPath</text>
+  <text x="187.5" y="450" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="16">Break Free</text>
+  
+  <!-- Loading indicator -->
+  <g transform="translate(187.5,500)">
+    <circle r="2" fill="url(#accent)" opacity="0.8">
+      <animate attributeName="opacity" values="0.8;0.2;0.8" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="2" fill="url(#accent)" opacity="0.6" transform="translate(10,0)">
+      <animate attributeName="opacity" values="0.6;0.2;0.6" dur="1.5s" begin="0.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="2" fill="url(#accent)" opacity="0.4" transform="translate(20,0)">
+      <animate attributeName="opacity" values="0.4;0.2;0.4" dur="1.5s" begin="0.4s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>
