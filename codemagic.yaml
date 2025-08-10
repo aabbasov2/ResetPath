@@ -1,14 +1,10 @@
 workflows:
-  ios-capacitor-workflow:
-    name: ResetPath iOS Build
+  ios-capacitor-unsigned:
+    name: ResetPath iOS (Unsigned for AltStore)
     max_build_duration: 120
     instance_type: mac_mini_m1
-    integrations:
-      app_store_connect: codemagic
     environment:
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: com.resetpath.app
+      # No ios_signing and no App Store Connect integration
       vars:
         BUNDLE_ID: "com.resetpath.app"
         XCODE_WORKSPACE: "ios/App/App.xcworkspace"
@@ -19,88 +15,55 @@ workflows:
     scripts:
       - name: Install npm dependencies
         script: |
-          npm install
-      - name: Install CocoaPods dependencies
-        script: |
-          cd ios/App && pod install
-      - name: Build React app
+          npm ci
+      - name: Build web assets
         script: |
           npm run build
-      - name: Sync Capacitor
+      - name: Sync Capacitor (iOS)
         script: |
           npx cap sync ios
-      - name: Set up code signing settings on Xcode project
+      - name: Install CocoaPods
         script: |
-          xcode-project use-profiles
-      - name: Build ipa for distribution
+          cd ios/App && pod install
+      - name: Build .app with code signing disabled
         script: |
-          xcode-project build-ipa \
-            --workspace "$XCODE_WORKSPACE" \
-            --scheme "$XCODE_SCHEME"
-    artifacts:
-      - build/ios/ipa/*.ipa
-      - /tmp/xcodebuild_logs/*.log
-      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
-      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
-    publishing:
-      email:
-        recipients:
-          - aabbasov2@example.com  # Replace with your email
-        notify:
-          success: true
-          failure: true
-      app_store_connect:
-        auth: integration
-        submit_to_testflight: false
-        submit_to_app_store: false
+          xcodebuild \
+            -workspace "$XCODE_WORKSPACE" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_IDENTITY="" \
+            DEVELOPMENT_TEAM="" \
+            PROVISIONING_PROFILE_SPECIFIER="" \
+            clean build
 
-  # Alternative workflow for development/testing builds
-  ios-development-workflow:
-    name: ResetPath iOS Development Build
-    max_build_duration: 60
-    instance_type: mac_mini_m1
-    environment:
-      ios_signing:
-        distribution_type: development
-        bundle_identifier: com.resetpath.app
-      vars:
-        BUNDLE_ID: "com.resetpath.app"
-        XCODE_WORKSPACE: "ios/App/App.xcworkspace"
-        XCODE_SCHEME: "App"
-      node: 18.17.0
-      xcode: latest
-      cocoapods: default
-    scripts:
-      - name: Install npm dependencies
+      - name: Package unsigned .ipa for AltStore
         script: |
-          npm install
-      - name: Install CocoaPods dependencies
-        script: |
-          cd ios/App && pod install
-      - name: Build React app
-        script: |
-          npm run build
-      - name: Sync Capacitor
-        script: |
-          npx cap sync ios
-      - name: Build for development
-        script: |
-          xcode-project build-ipa \
-            --workspace "$XCODE_WORKSPACE" \
-            --scheme "$XCODE_SCHEME" \
-            --config "Debug"
+          APP_PATH="$(/usr/bin/find build/Build/Products/Release-iphoneos -maxdepth 1 -name '*.app' | head -n 1)"
+          if [ -z "$APP_PATH" ]; then
+            echo "Could not find built .app"; exit 1
+          fi
+          mkdir -p payload/Payload
+          cp -R "$APP_PATH" payload/Payload/
+          (cd payload && zip -qry "../ResetPath-unsigned.ipa" Payload)
+          echo "Unsigned IPA at: $(pwd)/ResetPath-unsigned.ipa"
+
     artifacts:
-      - build/ios/ipa/*.ipa
+      - ResetPath-unsigned.ipa
       - /tmp/xcodebuild_logs/*.log
+      - build/Build/Products/Release-iphoneos/*.app
     publishing:
       email:
         recipients:
-          - aabbasov2@example.com  # Replace with your email
+          - aabbasov2@example.com
         notify:
           success: true
           failure: true
 
-  # Web build workflow for PWA deployment
+  # Optional: web PWA build (unchanged)
   web-pwa-workflow:
     name: ResetPath PWA Build
     max_build_duration: 30
@@ -110,7 +73,7 @@ workflows:
     scripts:
       - name: Install dependencies
         script: |
-          npm install
+          npm ci
       - name: Build PWA
         script: |
           npm run build
@@ -122,7 +85,7 @@ workflows:
     publishing:
       email:
         recipients:
-          - aabbasov2@example.com  # Replace with your email
+          - aabbasov2@example.com
         notify:
           success: true
           failure: true
